@@ -1,12 +1,14 @@
 from pathlib import Path
+import os
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
+OUTPUT_PATH = os.path.dirname(os.path.abspath(__file__))
+ASSETS_PATH = os.path.join(OUTPUT_PATH, f"{os.getcwd()}\\assets\\frame0")
 
-OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\admin\Desktop\build\assets\frame0")
+
 
 
 def relative_to_assets(path: str) -> Path:
@@ -171,6 +173,9 @@ canvas.create_text(
     fill="#817E7E",
     font=("Inter Regular", 13 * -1)
 )
+def btn_click():
+    print("button clicked")
+
 
 button_image_1 = PhotoImage(
     file=relative_to_assets("button_1.png"))
@@ -178,7 +183,7 @@ button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=btn_click,
     relief="flat"
 )
 button_1.place(
