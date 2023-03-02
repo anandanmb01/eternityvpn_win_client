@@ -1,14 +1,12 @@
 from pathlib import Path
 import os
 
-# from tkinter import *
+from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
 OUTPUT_PATH = os.path.dirname(os.path.abspath(__file__))
 ASSETS_PATH = os.path.join(OUTPUT_PATH, f"{os.getcwd()}\\assets\\frame0")
-
-
 
 
 def relative_to_assets(path: str) -> Path:
@@ -77,15 +75,6 @@ entry_1.place(
     width=310.0,
     height=40.0
 )
-def on_change_username(event):
-    # Get the text entered in entry_1
-    text = entry_1.get()
-    print("Text entered in entry_1:", text)
-
-entry_1.bind("<KeyRelease>", on_change_username)
-
-
-# entry_1.bind("<KEY>",lambda event : print("Key pressed:", event.char))
 
 canvas.create_text(
     48.0,
@@ -107,7 +96,8 @@ entry_2 = Entry(
     bd=0,
     bg="#D9D9D9",
     fg="#000716",
-    highlightthickness=0
+    highlightthickness=0,
+    show="*"
 )
 entry_2.place(
     x=78.0,
@@ -115,12 +105,7 @@ entry_2.place(
     width=310.0,
     height=40.0
 )
-def on_change_password(event):
-    # Get the text entered in entry_1
-    text = entry_2.get()
-    print("Text entered in entry_2:", text)
 
-entry_2.bind("<KeyRelease>", on_change_password)
 
 canvas.create_text(
     20.0,
@@ -165,34 +150,25 @@ canvas.create_text(
     font=("Inter Regular", 13 * -1)
 )
 
-canvas.create_text(
+
+status=canvas.create_text(
     117.0,
     398.0,
     anchor="nw",
-    text="Connected",
+    text="......................",
     fill="#817E7E",
     font=("Inter Regular", 13 * -1)
 )
-def btn_click():
-    print("button clicked")
 
-
-button_image_1 = PhotoImage(
-    file=relative_to_assets("button_1.png"))
-button_1 = Button(
-    image=button_image_1,
-    borderwidth=0,
-    highlightthickness=0,
-    command=btn_click,
-    relief="flat"
+message=canvas.create_text(
+    57,
+    539.0,
+    anchor="nw",
+    width=341,
+    text="",
+    fill="#FFFFFF",
+    font=("Inter Regular", 13 * -1)
 )
-button_1.place(
-    x=275.0,
-    y=386.0,
-    width=123.0,
-    height=38.0
-)
-
 canvas.create_text(
     119.0,
     430.0,
@@ -210,7 +186,32 @@ canvas.create_text(
     fill="#000000",
     font=("Inter Regular", 13 * -1)
 )
-window.resizable(False, False)
-window.mainloop()
+canvas.create_text(
+    119.0,
+    483.0,
+    anchor="nw",
+    text="23 MB",
+    fill="#000000",
+    font=("Inter Regular", 13 * -1)
+)
+
+button_image_1 = PhotoImage(
+    file=relative_to_assets("button_1.png"))
+button_1 = Button(
+    image=button_image_1,
+    borderwidth=0,
+    highlightthickness=0,
+    relief="flat"
+)
+button_1.place(
+    x=275.0,
+    y=386.0,
+    width=123.0,
+    height=38.0
+)
+button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
+
+
+
 
 
