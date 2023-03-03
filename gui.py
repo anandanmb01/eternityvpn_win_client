@@ -1,11 +1,11 @@
 from pathlib import Path
 import os
 
-from tkinter import *
+# from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
-OUTPUT_PATH = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_PATH = os.path.dirname(os.path.abspath(''))
 ASSETS_PATH = os.path.join(OUTPUT_PATH, f"{os.getcwd()}\\assets\\frame0")
 
 
@@ -15,6 +15,7 @@ def relative_to_assets(path: str) -> Path:
 
 window = Tk()
 
+window.wm_title("Eternity vpn")
 window.geometry("437x626")
 window.configure(bg = "#202020")
 
@@ -67,12 +68,13 @@ entry_1 = Entry(
     bd=0,
     bg="#D9D9D9",
     fg="#000716",
-    highlightthickness=0
+    highlightthickness=0,
+    font=("Inter Regular", 15 * -1)
 )
 entry_1.place(
-    x=78.0,
+    x=88.0,
     y=180.0,
-    width=310.0,
+    width=300.0,
     height=40.0
 )
 
@@ -97,18 +99,19 @@ entry_2 = Entry(
     bg="#D9D9D9",
     fg="#000716",
     highlightthickness=0,
-    show="*"
+    show="*",
+    font=("Inter Regular", 15 * -1)
 )
 entry_2.place(
-    x=78.0,
+    x=88.0,
     y=283.0,
-    width=310.0,
+    width=300.0,
     height=40.0
 )
 
 
 canvas.create_text(
-    20.0,
+    27.0,
     393.0,
     anchor="nw",
     text="Status",
@@ -133,7 +136,7 @@ image_3 = canvas.create_image(
 )
 
 canvas.create_text(
-    21.0,
+    27.0,
     483.0,
     anchor="nw",
     text="Traffic",
@@ -142,7 +145,7 @@ canvas.create_text(
 )
 
 canvas.create_text(
-    26.0,
+    27.0,
     431.0,
     anchor="nw",
     text="Ip address",
@@ -152,8 +155,8 @@ canvas.create_text(
 
 
 status=canvas.create_text(
-    117.0,
-    398.0,
+    119.0,
+    393.0,
     anchor="nw",
     text="......................",
     fill="#817E7E",
@@ -169,11 +172,11 @@ message=canvas.create_text(
     fill="#FFFFFF",
     font=("Inter Regular", 13 * -1)
 )
-canvas.create_text(
+ip_=canvas.create_text(
     119.0,
     430.0,
     anchor="nw",
-    text="192.168.25.65",
+    text="_._._._",
     fill="#000000",
     font=("Inter Regular", 13 * -1)
 )
@@ -186,14 +189,7 @@ canvas.create_text(
     fill="#000000",
     font=("Inter Regular", 13 * -1)
 )
-canvas.create_text(
-    119.0,
-    483.0,
-    anchor="nw",
-    text="23 MB",
-    fill="#000000",
-    font=("Inter Regular", 13 * -1)
-)
+
 
 button_image_1 = PhotoImage(
     file=relative_to_assets("button_1.png"))
@@ -209,9 +205,13 @@ button_1.place(
     width=123.0,
     height=38.0
 )
+
 button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
 
+button_image_hover_con = PhotoImage(
+    file=relative_to_assets("button_1_hover_con.png"))
 
-
+button_image_hover_dis = PhotoImage(
+    file=relative_to_assets("button_1_hover_dis.png"))
 
 
