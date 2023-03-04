@@ -1,14 +1,17 @@
+from pathlib import Path
 import os
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
-OUTPUT_PATH = os.path.dirname(os.path.abspath('__file__'))
-ASSETS_PATH = os.path.join(OUTPUT_PATH, os.getcwd(), 'assets', 'frame0')
+OUTPUT_PATH = os.path.dirname(os.path.abspath(''))
+ASSETS_PATH = os.path.join(OUTPUT_PATH, f"{os.getcwd()}\\assets\\frame0")
 
-def relative_to_assets(path: str) -> str:
-    return os.path.join(ASSETS_PATH, path)
+
+def relative_to_assets(path: str) -> Path:
+    return ASSETS_PATH / Path(path)
+
 
 window = Tk()
 
@@ -119,7 +122,7 @@ canvas.create_text(
 image_image_2 = PhotoImage(
     file=relative_to_assets("image_2.png"))
 image_2 = canvas.create_image(
-    196.0,
+    170.0,
     491.0,
     image=image_image_2
 )
@@ -161,10 +164,10 @@ status=canvas.create_text(
 )
 
 message=canvas.create_text(
-    107,
+    57,
     539.0,
     anchor="nw",
-    width=291,
+    width=341,
     text="",
     fill="#FFFFFF",
     font=("Inter Regular", 13 * -1)
@@ -178,11 +181,11 @@ ip_=canvas.create_text(
     font=("Inter Regular", 13 * -1)
 )
 
-traffic=canvas.create_text(
+canvas.create_text(
     119.0,
     483.0,
     anchor="nw",
-    text="0.00 B/s ⬇ 0.00 B/s ⬆",
+    text="23 MB",
     fill="#000000",
     font=("Inter Regular", 13 * -1)
 )
