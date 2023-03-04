@@ -64,6 +64,9 @@ class gui():
     
     def update_ip(self,ip):
         canvas.itemconfig(ip_, text=ip)
+        
+    def update_traffic(self,uplink,downlink):
+        canvas.itemconfig(traffic, text=f'{uplink} ⬆ {downlink} ⬇')
             
     def start(self):
         window.resizable(False, False)

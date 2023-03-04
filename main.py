@@ -9,17 +9,59 @@ import json
 ip_check_url = "https://api64.ipify.org?format=json"
 # ip_check_url = "https://ipinfo.io/json"
 network_status=True
+ref_ip_enable=True
+counters=None
 
 sys=sys()
 gui=gui()
 
+def get_counter(raw_data):
+    counter_data=raw_data[0][2:]
+    for n,d in enumerate(counter_data):
+        #n%3 == 0 counter
+        #n%3 == 1 value
+
+        if n%3 == 1:
+            if(int(d)>0):
+                counter_ref=counter_data[n-1].split(' :')[0].split('\\bytes transmitted')[0]
+                rec_speed=counter_ref+"\\Bytes Received/sec"
+                trans_speed=counter_ref+"\\Bytes Transmitted/Sec"
+                return [trans_speed.strip(),rec_speed.strip()]
+        
+def get_val_from_counter(counter):
+    try:
+        return float(sys.exec(f'Get-Counter -Counter "{counter}"')[0][-1].strip())
+    except:
+        return 0.00
+        
+def convert_data_speed(data_speed):
+    if data_speed < 1024:
+        return str(round(float(data_speed), 2)) + ' B/s'
+    elif data_speed < 1048576:
+        return '{:.2f} KB/s'.format(data_speed/1024)
+    elif data_speed < 1073741824:
+        return '{:.2f} MB/s'.format(data_speed/1048576)
+    else:
+        return '{:.2f} GB/s'.format(data_speed/1073741824)
+
     
 def gui_initial_update():
+    global t4
+    global counters
     if sys.connection_status:
         #connected
         gui.button_make_disconnect()
         gui.disp_status_connected()
         ######### update usage
+        if counters==None:
+            raw=sys.exec("Get-Counter -Counter '\RAS Port(*)\Bytes Transmitted'")
+            counters=get_counter(raw)
+            
+            if t4.is_alive():
+                pass
+            else:
+                t4 = threading.Thread(target=update_speed, daemon=True)
+                t4.start()
         
     else:
         #not connected
@@ -68,6 +110,7 @@ def create_vpn_profile():
     gui_initial_update()
     gui.update_ip(get_ip())
     
+
 def get_ip():
     global network_status
     try:
@@ -93,9 +136,10 @@ def get_ip():
     ##### data usage update
     
         
-ref_ip_enable=True
+
 
 def refresh_ip():
+    global ref_ip_enable
     while True:
         time.sleep(5)
         if ref_ip_enable:
@@ -104,8 +148,21 @@ def refresh_ip():
         else:
             break
         
+def update_speed():
+    global counters
+    global ref_ip_enable
+    while True:
+        time.sleep(1)
+        if (counters != None) and (ref_ip_enable):
+            uplink=convert_data_speed(get_val_from_counter(counters[0]))
+            downlink=convert_data_speed(get_val_from_counter(counters[1]))
+            gui.window.after(0,gui.update_traffic(uplink, downlink))
+        else:
+            break
         
 def button_clicked():
+    global t4
+    global counters
     gui.update_message("")
     if sys.connection_status:
         #connected
@@ -122,8 +179,6 @@ def button_clicked():
             gui.disp_status_disconnected()
             gui.button_make_connect()
             ##USAGE####
-            
-    
     else:
         #Not connected
         username=gui.get_username()
@@ -154,6 +209,15 @@ def button_clicked():
                 #####displ usage#######
     ip=get_ip()
     gui.canvas.after(0,gui.update_ip,ip)
+    
+    if counters==None:
+        raw=sys.exec("Get-Counter -Counter '\RAS Port(*)\Bytes Transmitted'")
+        counters=get_counter(raw)
+        if t4.is_alive():
+            pass
+        else:
+            t4 = threading.Thread(target=update_speed, daemon=True)
+            t4.start()
 
 
 def btn_exec(event):
@@ -181,18 +245,28 @@ button_1.bind("<Leave>", on_leave)
 gui.initialize()
 button_1.bind("<Button-1>",btn_exec)
 
-t1 = threading.Thread(target=create_vpn_profile)
-t2 = threading.Thread(target=refresh_ip)
+t1 = threading.Thread(target=create_vpn_profile, daemon=True)
+t2 = threading.Thread(target=refresh_ip, daemon=True)
+t4 = threading.Thread(target=update_speed, daemon=True)
 
 def shudown():
-    gui.window.destroy()
     global ref_ip_enable
+    global t4
+    global t2
     ref_ip_enable=False
-    t2.join()
-    t1.join()
+    gui.window.destroy()
+
+    # if t2.is_alive():
+    #     t2.join()
+    # if t4.is_alive():
+    #     t4.join()
+    
+    
+        
     
 t1.start()
 t2.start()
+t4.start()
 
 gui.window.protocol("WM_DELETE_WINDOW",shudown)
 gui.start()
