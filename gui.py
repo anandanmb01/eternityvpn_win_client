@@ -24,6 +24,8 @@ def relative_to_assets(relative_path):
 window = Tk()
 
 window.wm_title("Eternity vpn")
+window.iconbitmap(relative_to_assets("icon.ico"))
+window.iconbitmap()
 window.geometry("437x626")
 window.configure(bg = "#202020")
 
