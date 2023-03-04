@@ -1,14 +1,25 @@
 import os
+import sys
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
-OUTPUT_PATH = os.path.dirname(os.path.abspath('__file__'))
-ASSETS_PATH = os.path.join(OUTPUT_PATH, os.getcwd(), 'assets', 'frame0')
+# OUTPUT_PATH = os.path.dirname(os.path.abspath('__file__'))
+# ASSETS_PATH = os.path.join(OUTPUT_PATH, 'assets', 'frame0')
 
-def relative_to_assets(path: str) -> str:
-    return os.path.join(ASSETS_PATH, path)
+# def relative_to_assets(path: str) -> str:
+#     return os.path.join(ASSETS_PATH, path)
+
+
+def relative_to_assets(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.dirname(os.path.abspath('__file__'))
+
+    return os.path.join(base_path, 'assets', 'frame0',relative_path)
 
 window = Tk()
 
