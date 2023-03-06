@@ -19,3 +19,6 @@ Multi-threading is used extensively within the code to make the GUI completely r
 For system interaction, PowerShell command execution is utilized, and the Windows built-in RAS counter is used to get real-time data traffic speed. API calls are utilized to get the real IP.
 
 Overall, the Eternity VPN Windows client offers a user-friendly interface and fast, secure VPN connections for Eternity VPN users on Windows.
+
+
+we can build the application by pyinstaller
